@@ -12,7 +12,7 @@ int main() {
         return 1; // Exit with an error code
     }
 
-    const int maxSize = 100; // Set a maximum size for the array
+    const int maxSize = 1000000; // Set a maximum size for the array
     int myArray[maxSize];
     int arraySize = 0;
 
