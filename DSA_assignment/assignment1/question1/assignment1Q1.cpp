@@ -1,7 +1,7 @@
 #include<iostream>
 using namespace std;
 #include <fstream>
-
+int myArray[10000000];
 int main() {
     // Open the text file for reading
     ifstream inputFile("input.txt");
@@ -13,7 +13,7 @@ int main() {
     }
 
     const int maxSize = 10000000; // Set a maximum size for the array
-    int myArray[maxSize];
+    
     int arraySize = 0;
 
     // Read data from the file into the array
