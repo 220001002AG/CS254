@@ -1,1 +1,5 @@
 The input is of the format given below--
+5 (number of items)
+10 (max allowed weight )
+2 5 7 3 1 (weight)
+10 20 15 7 5 (price)
