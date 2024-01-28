@@ -1,1 +1,3 @@
-The maximum value we can get provided the given graph is 97 and the path is 0 3 2 1 
+version https://git-lfs.github.com/spec/v1
+oid sha256:49c18efee6c652d5c485e5ff2fd2f7e2a091343697f003b30f44d46943b33ce9
+size 84
