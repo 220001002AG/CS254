@@ -68,6 +68,12 @@ int main() {
         gr[a][b]=1;
         
     }
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            cout<<gr[i][j]<<" ";
+        }
+        cout<<endl;
+    }
     // creating complement of the graph
     for(int i=0;i<n;i++){
         for(int j=0;j<n;j++){
