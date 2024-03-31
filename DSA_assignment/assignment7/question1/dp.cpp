@@ -1,4 +1,3 @@
-// T(O(nw))
 #include<iostream>
 using namespace std;
 #include <fstream>
@@ -7,6 +6,7 @@ using namespace std;
 #include<queue>
 #include<algorithm>
 #include<cmath>
+#include<set>
 // int myArray[10000000];
 #define ll int
 int max(int a,int b){
@@ -15,16 +15,17 @@ int max(int a,int b){
     }
     return b;
 }
-int solve(vector<int>&weights,vector<int>&value,vector<vector<int>>&dp,int n,int w){
+int solve(vector<int>&weights,vector<int>&value,vector<vector<int>>&dp,int n,int w,int maxw,set<int>&ans){
     // cout<<"g"<<endl;
+    if(w>maxw){
+        // cout<<"g2"<<endl;
+        return INT_MIN;
+    }
     if(n<0){
         // cout<<"g1"<<endl;
         return 0;
     }
-    if(w<0){
-        // cout<<"g2"<<endl;
-        return INT_MIN;
-    }
+    
     
     if(dp[n][w]!=-1){
         // cout<<n<<w<<" "<<dp[n][w]<<"g3"<<endl;
@@ -32,7 +33,17 @@ int solve(vector<int>&weights,vector<int>&value,vector<vector<int>>&dp,int n,int
 
 
     
-    return dp[n][w]=max(solve(weights,value,dp,n-1,w-weights[n])+value[n],solve(weights,value,dp,n-1,w));
+    int a=solve(weights,value,dp,n-1,w+weights[n],maxw,ans)+value[n];
+    int b=solve(weights,value,dp,n-1,w,maxw,ans);
+    if(a>b){
+        dp[n][w]=a;
+        ans.insert(n);
+    }
+    else{
+        dp[n][w]=b;
+
+    }
+    return dp[n][w];
 
 
 }
@@ -64,13 +75,12 @@ int main() {
         value.push_back(val);
     }
     vector<vector<int>>dp(n,vector<int>(w+1,-1));
-    cout<<"iji"<<n<<" "<<w<<endl;
-    int cost=solve(weights,value,dp,n-1,w);
-    for(int i=0;i<n;i++){
-        for(int j=0;j<=w;j++){
-            cout<<dp[i][j]<<" ";
-        }
-    }
+    set<int>ans;
+    // cout<<"iji"<<n<<" "<<w<<endl;
+    int cost=solve(weights,value,dp,n-1,0,w,ans);
+    cout<<cost<<endl;
+    
+
     
     
 
