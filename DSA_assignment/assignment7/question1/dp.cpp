@@ -79,6 +79,10 @@ int main() {
     // cout<<"iji"<<n<<" "<<w<<endl;
     int cost=solve(weights,value,dp,n-1,0,w,ans);
     cout<<cost<<endl;
+    for(int i:ans){
+        cout<<i<<" ";
+    }
+    cout<<endl
     
 
     
