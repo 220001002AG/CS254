@@ -82,7 +82,7 @@ int main() {
     for(int i:ans){
         cout<<i<<" ";
     }
-    cout<<endl
+    cout<<endl;
     
 
     
