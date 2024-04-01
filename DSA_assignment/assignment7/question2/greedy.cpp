@@ -1,122 +1,94 @@
-//  T(O(nlogn))
-#include <iostream>
-#include <queue>
-#include <vector>
-#include <set>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <stack>
-#include <cmath>
-#include <climits>
-#include <algorithm>
-#include <chrono>
-#include <fstream>
-#include <string>
-#include <sstream>
-
+#include <bits/stdc++.h>
 using namespace std;
-using namespace std::chrono;
-
-pair<int, vector<string>> solve(vector<pair<string, pair<int, int>>> &jobs)
+#include <fstream>
+struct Job
 {
-    sort(jobs.begin(), jobs.end(), [](const pair<string, pair<int, int>> &a, const pair<string, pair<int, int>> &b)
-         {
-    if (a.second.first > b.second.first) {
-        return true;
-    } else if (a.second.first < b.second.first) {
-        return false;
-    } else { 
-        return a.second.second > b.second.second; 
-    } });
+    char id;
+    int dead;
+    int profit;
+};
 
-    int deadline = 0;
-    for (const auto &job : jobs)
+struct jobProfit
+{
+    bool operator()(Job const &a, Job const &b)
     {
-        deadline = max(deadline, job.second.first);
+        return (a.profit < b.profit);
     }
+};
 
-    int totalProfit = 0;
-    vector<string> sequence;
-    vector<bool> slot(deadline, false);
+void JobScheduling(Job arr[], int n)
+{
+    vector<Job> result;
+    sort(arr, arr + n,
+         [](Job a, Job b)
+         { return a.dead < b.dead; });
 
-    for (const auto &job : jobs)
+    priority_queue<Job, vector<Job>, jobProfit> pq;
+
+    for (int i = n - 1; i >= 0; i--)
     {
-        string jobName = job.first;
-        int jobDeadline = job.second.first;
-        int jobProfit = job.second.second;
+        int slot_available;
 
-        for (int i = jobDeadline - 1; i >= 0; i--)
+        if (i == 0)
         {
-            if (slot[i] == false)
-            {
-                slot[i] = true;
-                sequence.push_back(jobName);
-                totalProfit += jobProfit;
-                break;
-            }
+            slot_available = arr[i].dead;
+        }
+        else
+        {
+            slot_available = arr[i].dead - arr[i - 1].dead;
+        }
+
+        pq.push(arr[i]);
+
+        while (slot_available > 0 && pq.size() > 0)
+        {
+
+            Job job = pq.top();
+            pq.pop();
+            slot_available--;
+
+            result.push_back(job);
         }
     }
 
-    return make_pair(totalProfit, sequence);
+    sort(result.begin(), result.end(),
+         [&](Job a, Job b)
+         { return a.dead < b.dead; });
+
+    for (int i = 0; i < result.size(); i++)
+        cout << result[i].id << ' ';
+    cout << endl;
 }
 
 int main()
 {
-    auto start = high_resolution_clock::now();
-
-    // vector<pair<string, pair<int, int>>> jobs = {
-    //     make_pair("a", make_pair(3, 20)),
-    //     make_pair("b", make_pair(1, 45)),
-    //     make_pair("c", make_pair(2, 15)),
-    //     make_pair("d", make_pair(3, 30)),
-    //     make_pair("e", make_pair(2, 35)),
-    //     make_pair("f", make_pair(1, 10))};
-
-    // pair<int, vector<string>> result = solve(jobs);
-
-    // cout << "Total Profit: " << result.first << endl;
-    // cout << "Job Sequence: ";
-    // for (string job : result.second)
-    // {
-    //     cout << job << " ";
-    // }
-    // cout << endl;
-
     ifstream inputFile("input.txt");
-    ofstream outputFile("output.txt");
 
-    int numTestCases;
-    inputFile >> numTestCases;
-
-    while (numTestCases--)
-    {
-        int numJobs;
-        inputFile >> numJobs;
-
-        vector<pair<string, pair<int, int>>> jobs;
-        for (int i = 0; i < numJobs; ++i)
-        {
-            string jobName;
-            int jobDeadline;
-            int jobProfit;
-
-            inputFile >> jobName >> jobDeadline >> jobProfit;
-            jobs.push_back(make_pair(jobName, make_pair(jobDeadline, jobProfit)));
-        }
-
-        pair<int, vector<string>> result = solve(jobs);
-
-        outputFile << result.first << endl;
-        for (string job : result.second)
-        {
-            outputFile << job << " ";
-        }
-        outputFile << endl;
+    // Check if the file is open
+    if (!inputFile.is_open()) {
+        cerr << "Error opening file." <<endl;
+        return 1; // Exit with an error code
     }
+    int n;
+    inputFile>>n;
 
-    auto end = high_resolution_clock::now();
-    auto duration = duration_cast<milliseconds>(end - start);
-    cout << "Execution time: " << duration.count() << " milliseconds" << endl;
+    Job arr[n];
+    for(int i=0;i<n;i++){
+        Job v;
+        inputFile>>v.id>>v.dead>>v.profit;
+        arr[i]=v;
+        // cout<<v.id<<endl;
+
+        
+    }
+    inputFile.close();
+    ofstream outputFile("output.txt");
+    if (!outputFile.is_open()) {
+        cerr << "Error opening output file." <<endl;
+        return 1; // Exit with an error code
+    }
+    JobScheduling(arr, n);
+    // int n = sizeof(arr) / sizeof(arr[0]);
+    
     return 0;
 }
