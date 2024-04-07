@@ -46,12 +46,12 @@ int main() {
     for(ll i=0;i<n;i++){
         
         ll u,v,w;
-        inputFile<<u<<v<<w;
+        inputFile>>w>>u>>v;
         edges.push_back({w,u,v});
 
     
     }
-    sort(edges.begin(),edges.end());
+    sort(edges.begin(),edges.end(),greater<vector<ll>>());
     map<ll,ll>mk;
     for(ll i=1;i<=nodes;i++){
         mk[i]=i;
@@ -116,7 +116,7 @@ int main() {
     // Write the contents of the array to the output file
     
     for(ll i=0;i<ans.size();i++){
-        outputFile<<ans[i][0]<<" "<<ans[i][1]<<" "<<ans[i][2]<<" ";
+        outputFile<<ans[i][0]<<" "<<ans[i][1]<<" "<<ans[i][2]<<" "<<endl;
     }
     outputFile<<endl;
     
